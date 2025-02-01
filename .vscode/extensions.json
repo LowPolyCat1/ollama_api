@@ -1,0 +1,8 @@
+{
+	"recommendations": [
+		"rust-lang.rust-analyzer",
+		"Alexander.error-lens",
+		"tamasfe.even-better-toml",
+		"fill-labs.dependi"
+	]
+}

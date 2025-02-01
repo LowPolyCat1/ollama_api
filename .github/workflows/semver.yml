@@ -1,0 +1,28 @@
+# use this for public repos that are supposed to be released to crates.io
+name: Semantic Version Checks
+
+on:
+    push:
+        branches: [ master, main ]
+    pull_request:
+        branches: [ master, main ]
+
+jobs:
+    semver-checks:
+        runs-on: ubuntu-latest
+
+        steps:
+          - name: Checkout repository
+            uses: actions/checkout@v2
+
+          - name: Install Rust
+            uses: actions-rs/toolchain@v1
+            with:
+              toolchain: stable
+              override: false
+
+          - name: Install cargo-semver-checks
+            run: cargo install cargo-semver-checks
+
+          - name: Run cargo semver-checks
+            run: cargo semver-checks --manifest-path ./Cargo.toml

@@ -1,0 +1,17 @@
+{
+    "editor.formatOnSave": true,
+    "editor.rulers": [
+        100
+    ],
+    "editor.autoClosingComments": "always",
+    "editor.indentSize": "tabSize",
+    "editor.lineNumbers": "relative",
+    "rust-analyzer.linkedProjects": [
+        ".\\Cargo.toml"
+    ],
+    "rust-analyzer.showUnlinkedFileNotification": false,
+    "rust-analyzer.check.allTargets": false,
+    "cSpell.words": [
+        "clippy"
+    ],
+}
