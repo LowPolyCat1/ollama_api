@@ -9,6 +9,7 @@ use serde_json::Value;
 use std::any::Any;
 use tokio::stream;
 
+#[derive(Clone)]
 pub struct Ollama {
     pub url: Url,
     pub model: String,
