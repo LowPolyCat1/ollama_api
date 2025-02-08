@@ -131,12 +131,12 @@ async fn main() -> Result<(), OllamaError> {
 - [x] Basic text generation
 - [x] Streaming responses
 - [x] Context management
-- [ ] Model management API
-- [ ] Advanced configuration options
 - [x] Async trait implementations
+- [ ] Model management
+- [ ] Advanced configuration options (Modelfile)
+- [ ] Image processing
 - [ ] Comprehensive documentation
 - [ ] More error handling variants
-- [ ]
 
 See the [open issues](https://github.com/lowpolycat1/rusty_ollama/issues) for full list of proposed features.
 
