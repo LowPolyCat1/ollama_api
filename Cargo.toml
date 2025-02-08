@@ -19,3 +19,19 @@ futures = { version = "0.3.31" }
 
 
 [dev-dependencies]
+futures-util = { version = "0.3.31" }
+
+
+[[example]]
+name = "stream_words"
+path = "./examples/stream_words.rs"
+
+
+[[example]]
+name = "generate"
+path = "./examples/generate.rs"
+
+
+[[example]]
+name = "stream_paragraphs"
+path = "./examples/stream_paragraphs.rs"
