@@ -31,6 +31,21 @@ impl From<tokio_util::codec::LinesCodecError> for OllamaError {
     }
 }
 
+#[derive(Debug, Serialize, Deserialize, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
+pub enum Format {
+    None,
+    JSON,
+}
+
+impl Into<String> for Format {
+    fn into(self) -> String {
+        match self {
+            Format::None => "".into(),
+            Format::JSON => "json".into(),
+        }
+    }
+}
+
 #[derive(Clone)]
 pub struct Ollama {
     pub url: Url,
@@ -43,7 +58,7 @@ pub struct Ollama {
 #[derive(Serialize, Deserialize, Clone, PartialEq, Eq, PartialOrd, Ord, Debug)]
 pub struct OllamaRequestOptions {
     pub suffix: String,
-    pub format: String,
+    pub format: Format,
     pub system: String,
     pub context: Vec<u64>,
 }
@@ -72,7 +87,7 @@ impl OllamaRequest {
             model: model.into(),
             prompt: prompt.into(),
             suffix: options.suffix,
-            format: options.format,
+            format: options.format.into(),
             system: options.system,
             stream,
             raw,
@@ -88,7 +103,7 @@ impl Default for OllamaRequest {
             "",
             OllamaRequestOptions {
                 suffix: "".into(),
-                format: "".into(),
+                format: Format::None.into(),
                 system: "".into(),
                 context: vec![],
             },
@@ -200,7 +215,7 @@ impl Ollama {
             prompt,
             OllamaRequestOptions {
                 suffix: "".into(),
-                format: "".into(),
+                format: Format::None,
                 system: self.system.clone(),
                 context: self.context.clone(),
             },
@@ -230,7 +245,7 @@ impl Ollama {
             prompt,
             OllamaRequestOptions {
                 suffix: "".into(),
-                format: "".into(),
+                format: Format::None,
                 system: self.system.clone(),
                 context: self.context.clone(),
             },
