@@ -123,6 +123,8 @@ async fn main() -> Result<(), OllamaError> {
 }
 ```
 
+_for more examples see hte [examples](/examples/examples.md)_
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- ROADMAP -->
