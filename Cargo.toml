@@ -3,7 +3,6 @@ publish = false
 name = "rusty_ollama"
 version = "0.1.0"
 edition = "2021"
-github = "lowpolycat1"
 authors = ["lowpolycat1"]
 description = "A Rust Ollama API"
 license = "MIT"
