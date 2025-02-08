@@ -37,9 +37,9 @@ pub enum Format {
     JSON,
 }
 
-impl Into<String> for Format {
-    fn into(self) -> String {
-        match self {
+impl From<Format> for String {
+    fn from(val: Format) -> Self {
+        match val {
             Format::None => "".into(),
             Format::JSON => "json".into(),
         }
@@ -103,7 +103,7 @@ impl Default for OllamaRequest {
             "",
             OllamaRequestOptions {
                 suffix: "".into(),
-                format: Format::None.into(),
+                format: Format::None,
                 system: "".into(),
                 context: vec![],
             },
