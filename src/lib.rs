@@ -14,7 +14,6 @@ use thiserror::Error;
 use tokio_util::codec::{FramedRead, LinesCodec};
 use tokio_util::io::StreamReader;
 
-// Our custom error type.
 #[derive(Debug, Error)]
 pub enum OllamaError {
     #[error("Reqwest error: {0}")]
@@ -27,7 +26,6 @@ pub enum OllamaError {
     Io(#[from] std::io::Error),
 }
 
-// Implement conversion from LinesCodecError to OllamaError.
 impl From<tokio_util::codec::LinesCodecError> for OllamaError {
     fn from(err: tokio_util::codec::LinesCodecError) -> Self {
         Self::Io(std::io::Error::new(std::io::ErrorKind::Other, err))
@@ -50,6 +48,14 @@ pub enum Format {
 }
 
 #[derive(Serialize, Deserialize, Clone, PartialEq, Eq, PartialOrd, Ord, Debug)]
+pub struct OllamaRequestOptions {
+    pub suffix: String,
+    pub format: String,
+    pub system: String,
+    pub context: Vec<u64>,
+}
+
+#[derive(Serialize, Deserialize, Clone, PartialEq, Eq, PartialOrd, Ord, Debug)]
 pub struct OllamaRequest {
     pub model: String,
     pub prompt: String,
@@ -65,33 +71,40 @@ impl OllamaRequest {
     pub fn new(
         model: impl Into<String>,
         prompt: impl Into<String>,
-        suffix: impl Into<String>,
-        format: impl Into<String>,
-        system: impl Into<String>,
+        options: OllamaRequestOptions,
         stream: bool,
         raw: bool,
-        context: Vec<u64>,
     ) -> Self {
         Self {
             model: model.into(),
             prompt: prompt.into(),
-            suffix: suffix.into(),
-            format: format.into(),
-            system: system.into(),
+            suffix: options.suffix,
+            format: options.format,
+            system: options.system,
             stream,
             raw,
-            context,
+            context: options.context,
         }
     }
 }
 
 impl Default for OllamaRequest {
     fn default() -> Self {
-        Self::new("llama3.2", "", "", "json", "", false, false, vec![])
+        OllamaRequest::new(
+            "llama3.2",
+            "",
+            OllamaRequestOptions {
+                suffix: "".into(),
+                format: "json".into(),
+                system: "".into(),
+                context: vec![],
+            },
+            false,
+            false,
+        )
     }
 }
 
-/// Non-streaming response
 #[derive(Serialize, Deserialize, Clone, PartialEq, Eq, PartialOrd, Ord, Debug)]
 pub struct OllamaResponse {
     pub total_duration: u64,
@@ -144,7 +157,6 @@ impl TryFrom<String> for OllamaResponse {
     }
 }
 
-/// Streaming response type
 #[derive(Serialize, Deserialize, Debug)]
 pub struct OllamaStreamResponse {
     pub model: String,
@@ -170,7 +182,6 @@ pub struct OllamaStreamResponse {
 }
 
 impl Ollama {
-    /// Creates a new instance with the given URL and model.
     pub fn new(url: impl IntoUrl, model: impl Into<String>) -> Result<Ollama, OllamaError> {
         let client = reqwest::Client::new();
         let url = url.into_url()?;
@@ -183,12 +194,10 @@ impl Ollama {
         })
     }
 
-    /// Creates a default instance.
-    pub fn default() -> Result<Ollama, OllamaError> {
+    pub fn create_default() -> Result<Ollama, OllamaError> {
         Ollama::new("http://localhost:11434", "llama3.2")
     }
 
-    /// Sends a non-streaming request and returns the complete response.
     pub async fn generate(
         &mut self,
         prompt: impl Into<String>,
@@ -196,12 +205,14 @@ impl Ollama {
         let request = OllamaRequest::new(
             self.model.as_str(),
             prompt,
-            "",
-            "",
-            self.system.as_str(),
-            false, // not streaming
+            OllamaRequestOptions {
+                suffix: "".into(),
+                format: "json".into(),
+                system: self.system.clone(),
+                context: self.context.clone(),
+            },
             false,
-            self.context.clone(),
+            false,
         );
 
         let request_json = serde_json::to_string(&request)?;
@@ -217,7 +228,6 @@ impl Ollama {
         Ok(response)
     }
 
-    /// Sends a streaming request and returns a stream of `OllamaStreamResponse`.
     pub async fn stream_generate(
         &mut self,
         prompt: impl Into<String>,
@@ -225,12 +235,14 @@ impl Ollama {
         let request = OllamaRequest::new(
             self.model.as_str(),
             prompt,
-            "",
-            "",
-            self.system.as_str(),
-            true, // streaming enabled
+            OllamaRequestOptions {
+                suffix: "".into(),
+                format: "json".into(),
+                system: self.system.clone(),
+                context: self.context.clone(),
+            },
+            true,
             false,
-            self.context.clone(),
         );
 
         let request_json = serde_json::to_string(&request)?;
@@ -241,16 +253,13 @@ impl Ollama {
             .send()
             .await?;
 
-        // Convert the response body into a stream of bytes.
         let byte_stream = res
             .bytes_stream()
             .map_err(|e| std::io::Error::new(std::io::ErrorKind::Other, e));
         let stream_reader = StreamReader::new(byte_stream);
 
-        // Use LinesCodec to split the stream into lines.
         let lines = FramedRead::new(stream_reader, LinesCodec::new());
 
-        // Parse each nonempty line as an OllamaStreamResponse.
         let parsed = lines.filter_map(|line_result| async move {
             match line_result {
                 Ok(line) if !line.trim().is_empty() => {
