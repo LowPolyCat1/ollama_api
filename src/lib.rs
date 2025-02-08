@@ -19,12 +19,6 @@
 //! }
 //! ```
 
-#[cfg(test)]
-#[allow(missing_docs)]
-pub mod tests {
-    //! Test module (implementation details omitted for documentation)
-}
-
 use futures::Stream;
 use futures::StreamExt;
 use futures::TryStreamExt;
