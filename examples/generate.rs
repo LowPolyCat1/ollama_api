@@ -1,4 +1,5 @@
 use rusty_ollama::Ollama;
+use rusty_ollama::OllamaError;
 
 #[tokio::main]
 async fn main() -> Result<(), OllamaError> {
@@ -7,4 +8,5 @@ async fn main() -> Result<(), OllamaError> {
     let res = ollama.generate("Why is the sky blue?").await?;
 
     println!("{}", res.response);
+    Ok(())
 }
