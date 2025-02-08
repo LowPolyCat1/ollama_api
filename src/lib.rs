@@ -9,7 +9,6 @@ use futures::TryStreamExt;
 use reqwest::{self, IntoUrl, Url};
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
-use std::pin::Pin;
 use thiserror::Error;
 use tokio_util::codec::{FramedRead, LinesCodec};
 use tokio_util::io::StreamReader;
