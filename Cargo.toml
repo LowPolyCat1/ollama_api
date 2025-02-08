@@ -1,5 +1,4 @@
 [package]
-publish = false
 name = "rusty_ollama"
 version = "0.1.0"
 edition = "2021"
@@ -7,6 +6,7 @@ authors = ["lowpolycat1"]
 description = "A Rust Ollama API"
 license = "MIT"
 repository = "https://github.com/lowpolycat1/rusty_ollama"
+publish = true
 
 [dependencies]
 tokio = { version = "1.43.0", features = ["full"] }
