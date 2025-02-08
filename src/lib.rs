@@ -302,7 +302,7 @@ impl Ollama {
         Ollama::new("http://localhost:11434", "llama3.2")
     }
 
-    /// Generate text completion (blocking)
+    /// Generate text completion
     ///
     /// # Arguments
     /// * `prompt` - Input text prompt
@@ -413,6 +413,12 @@ impl Ollama {
         Ok(parsed)
     }
 
+    /// Generate text completion (Blocking)
+    ///
+    /// # Arguments
+    /// * `prompt` - Input text prompt
+    ///
+    /// Updates internal context for subsequent requests
     pub fn generate_blocking(
         &mut self,
         prompt: impl Into<String>,
