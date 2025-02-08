@@ -13,23 +13,23 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/your_github_username/your_repo_name">
+  <a href="https://github.com/lowpolycat1/rusty_ollama">
     <img src="readme-sections/logo.png" alt="Logo" width="80" height="80">
   </a>
 
 <h3 align="center">your_project_title</h3>
 
   <p align="center">
-    your_project_description
+    A Rust Ollama API
     <br />
-    <a href="https://github.com/your_github_username/your_repo_name"><strong>Explore the docs »</strong></a>
+    <a href="https://github.com/lowpolycat1/rusty_ollama"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/your_github_username/your_repo_name">View Demo</a>
+    <a href="https://github.com/lowpolycat1/rusty_ollama">View Demo</a>
     ·
-    <a href="https://github.com/your_github_username/your_repo_name/issues/new?labels=bug&template=bug-report---.md">Report Bug</a>
+    <a href="https://github.com/lowpolycat1/rusty_ollama/issues/new?labels=bug&template=bug-report---.md">Report Bug</a>
     ·
-    <a href="https://github.com/your_github_username/your_repo_name/issues/new?labels=enhancement&template=feature-request---.md">Request Feature</a>
+    <a href="https://github.com/lowpolycat1/rusty_ollama/issues/new?labels=enhancement&template=feature-request---.md">Request Feature</a>
   </p>
 </div>
 
@@ -64,7 +64,7 @@
 
 [![Product Name Screen Shot][product-screenshot]](https://example.com)
 
-Here's a blank template to get started. To avoid retyping too much info, do a search and replace with your text editor for the following: `your_github_username`, `your_repo_name`, `your_twitter_handle`, `your_linkedin_username`, `your_email_client`, `your_email`, `your_project_title`, `your_project_description`, `your_project_license`
+<!-- Here's a blank template to get started. To avoid retyping too much info, do a search and replace with your text editor for the following: `lowpolycat1`, `rusty_ollama`, `your_twitter_handle`, `your_linkedin_username`, `your_email_client`, `your_email`, `your_project_title`, `A Rust Ollama API`, `MIT` -->
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -103,7 +103,7 @@ This is an example of how to list things you need to use the software and how to
 2. Clone the repo
 
    ```sh
-   git clone https://github.com/your_github_username/your_repo_name.git
+   git clone https://github.com/lowpolycat1/rusty_ollama.git
    ```
 
 3. Install NPM packages
@@ -121,7 +121,7 @@ This is an example of how to list things you need to use the software and how to
 5. Change git remote url to avoid accidental pushes to base project
 
    ```sh
-   git remote set-url origin your_github_username/your_repo_name
+   git remote set-url origin lowpolycat1/rusty_ollama
    git remote -v # confirm the changes
    ```
 
@@ -144,7 +144,7 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 * [ ] Feature 3
   * [ ] Nested Feature
 
-See the [open issues](https://github.com/your_github_username/your_repo_name/issues) for a full list of proposed features (and known issues).
+See the [open issues](https://github.com/lowpolycat1/rusty_ollama/issues) for a full list of proposed features (and known issues).
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -166,14 +166,14 @@ Don't forget to give the project a star! Thanks again!
 
 ### Top contributors
 
-<a href="https://github.com/your_github_username/your_repo_name/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=your_github_username/your_repo_name" alt="contrib.rocks image" />
+<a href="https://github.com/lowpolycat1/rusty_ollama/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=lowpolycat1/rusty_ollama" alt="contrib.rocks image" />
 </a>
 
 <!-- LICENSE -->
 ## License
 
-Distributed under the your_project_license. See `LICENSE.txt` for more information.
+Distributed under the MIT. See `LICENSE.txt` for more information.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -182,7 +182,7 @@ Distributed under the your_project_license. See `LICENSE.txt` for more informati
 
 Your Name - [@your_twitter_handle](https://twitter.com/your_twitter_handle) - <your_email@your_email_client.com>
 
-Project Link: [https://github.com/your_github_username/your_repo_name](https://github.com/your_github_username/your_repo_name)
+Project Link: [https://github.com/lowpolycat1/rusty_ollama](https://github.com/lowpolycat1/rusty_ollama)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -197,16 +197,16 @@ Project Link: [https://github.com/your_github_username/your_repo_name](https://g
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/your_github_username/your_repo_name.svg?style=for-the-badge
-[contributors-url]: https://github.com/your_github_username/your_repo_name/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/your_github_username/your_repo_name.svg?style=for-the-badge
-[forks-url]: https://github.com/your_github_username/your_repo_name/network/members
-[stars-shield]: https://img.shields.io/github/stars/your_github_username/your_repo_name.svg?style=for-the-badge
-[stars-url]: https://github.com/your_github_username/your_repo_name/stargazers
-[issues-shield]: https://img.shields.io/github/issues/your_github_username/your_repo_name.svg?style=for-the-badge
-[issues-url]: https://github.com/your_github_username/your_repo_name/issues
-[license-shield]: https://img.shields.io/github/license/your_github_username/your_repo_name.svg?style=for-the-badge
-[license-url]: https://github.com/your_github_username/your_repo_name/blob/master/LICENSE.txt
+[contributors-shield]: https://img.shields.io/github/contributors/lowpolycat1/rusty_ollama.svg?style=for-the-badge
+[contributors-url]: https://github.com/lowpolycat1/rusty_ollama/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/lowpolycat1/rusty_ollama.svg?style=for-the-badge
+[forks-url]: https://github.com/lowpolycat1/rusty_ollama/network/members
+[stars-shield]: https://img.shields.io/github/stars/lowpolycat1/rusty_ollama.svg?style=for-the-badge
+[stars-url]: https://github.com/lowpolycat1/rusty_ollama/stargazers
+[issues-shield]: https://img.shields.io/github/issues/lowpolycat1/rusty_ollama.svg?style=for-the-badge
+[issues-url]: https://github.com/lowpolycat1/rusty_ollama/issues
+[license-shield]: https://img.shields.io/github/license/lowpolycat1/rusty_ollama.svg?style=for-the-badge
+[license-url]: https://github.com/lowpolycat1/rusty_ollama/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/your_linkedin_username
 [product-screenshot]: images/screenshot.png
