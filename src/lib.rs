@@ -41,12 +41,6 @@ pub struct Ollama {
     pub system: String,
 }
 
-#[derive(Serialize, Deserialize, Clone, PartialEq, Eq, PartialOrd, Ord, Default)]
-pub enum Format {
-    #[default]
-    Json,
-}
-
 #[derive(Serialize, Deserialize, Clone, PartialEq, Eq, PartialOrd, Ord, Debug)]
 pub struct OllamaRequestOptions {
     pub suffix: String,
