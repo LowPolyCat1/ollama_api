@@ -12,7 +12,7 @@ publish = true
 tokio = { version = "1.43.0", features = ["full"] }
 serde = { version = "1.0.217", features = ["derive"] }
 serde_json = "1.0.138"
-reqwest = { version = "0.12.12", features = ["stream"] }
+reqwest = { version = "0.12.12", features = ["stream", "blocking"] }
 thiserror = { version = "2.0.11" }
 tokio-util = { version = "0.7.13" }
 futures = { version = "0.3.31" }
@@ -35,3 +35,8 @@ path = "./examples/generate.rs"
 [[example]]
 name = "stream_paragraphs"
 path = "./examples/stream_paragraphs.rs"
+
+
+[[example]]
+name = "generate_blocking"
+path = "./examples/generate_blocking.rs"

@@ -25,6 +25,7 @@ use futures::TryStreamExt;
 use reqwest::{self, IntoUrl, Url};
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
+use std::time::Duration;
 use thiserror::Error;
 use tokio_util::codec::{FramedRead, LinesCodec};
 use tokio_util::io::StreamReader;
@@ -410,5 +411,36 @@ impl Ollama {
         });
 
         Ok(parsed)
+    }
+
+    pub fn generate_blocking(
+        &mut self,
+        prompt: impl Into<String>,
+    ) -> Result<OllamaResponse, OllamaError> {
+        let request = OllamaRequest::new(
+            self.model.as_str(),
+            prompt,
+            OllamaRequestOptions {
+                suffix: "".into(),
+                format: Format::None,
+                system: self.system.clone(),
+                context: self.context.clone(),
+            },
+            false,
+            false,
+        );
+
+        let request_json = serde_json::to_string(&request)?;
+
+        let response_text = reqwest::blocking::Client::new()
+            .post(self.url.as_str())
+            .body(request_json)
+            .timeout(Duration::from_secs_f64(300.0))
+            .send()?
+            .text()?;
+
+        let response = OllamaResponse::try_from(response_text)?;
+        self.context = response.context.clone();
+        Ok(response)
     }
 }
