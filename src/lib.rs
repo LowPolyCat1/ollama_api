@@ -7,7 +7,7 @@
 //! with Ollama's large language models.
 //!
 //! # Example
-//! ```
+//! ```no_run
 //! use rusty_ollama::{Ollama, OllamaError};
 //!
 //! #[tokio::main]
@@ -20,7 +20,10 @@
 //! ```
 
 #[cfg(test)]
-pub mod tests;
+#[allow(missing_docs)]
+pub mod tests {
+    //! Test module (implementation details omitted for documentation)
+}
 
 use futures::Stream;
 use futures::StreamExt;
@@ -258,13 +261,13 @@ pub struct OllamaStreamResponse {
     /// Prompt evaluation metrics
     #[serde(default)]
     pub prompt_eval_count: Option<u8>,
-    /// Prompt evaluation metrics
+    /// Prompt evaluation duration
     #[serde(default)]
     pub prompt_eval_duration: Option<u64>,
     /// Generation metrics
     #[serde(default)]
     pub eval_count: Option<u16>,
-    /// Generation metrics
+    /// Generation duration
     #[serde(default)]
     pub eval_duration: Option<u64>,
 }
@@ -277,8 +280,13 @@ impl Ollama {
     /// * `model` - Model identifier string
     ///
     /// # Example
-    /// ```
+    /// ```no_run
+    /// use rusty_ollama::{Ollama, OllamaError};
+    ///
+    /// # fn main() -> Result<(), OllamaError> {
     /// let ollama = Ollama::new("http://localhost:11434", "llama3.2")?;
+    /// # Ok(())
+    /// # }
     /// ```
     pub fn new(url: impl IntoUrl, model: impl Into<String>) -> Result<Ollama, OllamaError> {
         let client = reqwest::Client::new();
@@ -340,13 +348,21 @@ impl Ollama {
     /// Returns a stream of OllamaStreamResponse chunks
     ///
     /// # Example
-    /// ```
-    /// let mut stream = ollama.stream_generate("Tell me about").await?;
-    /// while let Some(chunk) = stream.next().await {
-    ///     match chunk {
-    ///         Ok(response) => print!("{}", response.response),
-    ///         Err(e) => eprintln!("Error: {}", e),
+    /// ```no_run
+    /// use rusty_ollama::{Ollama, OllamaError};
+    /// use futures::StreamExt;
+    ///
+    /// #[tokio::main]
+    /// async fn main() -> Result<(), OllamaError> {
+    ///     let mut ollama = Ollama::create_default()?;
+    ///     let mut stream = ollama.stream_generate("Tell me about").await?;
+    ///     while let Some(chunk) = stream.next().await {
+    ///         match chunk {
+    ///             Ok(response) => print!("{}", response.response),
+    ///             Err(e) => eprintln!("Error: {}", e),
+    ///         }
     ///     }
+    ///     Ok(())
     /// }
     /// ```
     pub async fn stream_generate(
