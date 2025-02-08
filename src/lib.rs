@@ -3,11 +3,19 @@
 #[cfg(test)]
 pub mod tests;
 
-use reqwest::{self, Error, IntoUrl, Url};
+use reqwest::{self, IntoUrl, Url};
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
-use std::any::Any;
-use tokio::stream;
+use thiserror::Error;
+
+#[derive(Debug, Error)]
+pub enum OllamaError {
+    #[error("Reqwest error: {0}")]
+    Reqwest(#[from] reqwest::Error),
+
+    #[error("Serde error: {0}")]
+    Serde(#[from] serde_json::Error),
+}
 
 #[derive(Clone)]
 pub struct Ollama {
@@ -29,9 +37,9 @@ pub struct OllamaRequest {
     pub model: String,
     pub prompt: String,
     pub suffix: String,
-    // pub images: base64 encoded images
+    // pub images:          // For example, base64 encoded images could be added here in the future.
     pub format: String,
-    // pub options: Modelfile implementation
+    // pub options:         // Additional options could be added here later.
     pub system: String,
     pub stream: bool,
     pub raw: bool,
@@ -73,30 +81,30 @@ impl Default for OllamaRequest {
 pub struct OllamaResponse {
     pub total_duration: u64,
     pub load_duration: u64,
-    pub prompt_eval_count: u8, // might make this u16, u32, or u64 later
+    pub prompt_eval_count: u8, // might change this to u16, u32, or u64 if error
     pub prompt_eval_duration: u64,
-    pub eval_count: u16, // might make this u32 or u64 later
+    pub eval_count: u16, // might change this to u32 or u64 if error
     pub eval_duration: u64,
     pub context: Vec<u64>,
     pub response: String,
 }
 
 impl From<Value> for OllamaResponse {
-    fn from(v: Value) -> Self {
+    fn from(value: Value) -> Self {
         Self {
-            total_duration: v["total_duration"].as_u64().unwrap_or_default(),
-            load_duration: v["load_duration"].as_u64().unwrap_or_default(),
-            prompt_eval_count: v["prompt_eval_count"].as_u64().unwrap_or_default() as u8,
-            prompt_eval_duration: v["prompt_eval_duration"].as_u64().unwrap_or_default(),
-            eval_count: v["eval_count"].as_u64().unwrap_or_default() as u16,
-            eval_duration: v["eval_duration"].as_u64().unwrap_or_default(),
-            context: v["context"]
+            total_duration: value["total_duration"].as_u64().unwrap_or_default(),
+            load_duration: value["load_duration"].as_u64().unwrap_or_default(),
+            prompt_eval_count: value["prompt_eval_count"].as_u64().unwrap_or_default() as u8,
+            prompt_eval_duration: value["prompt_eval_duration"].as_u64().unwrap_or_default(),
+            eval_count: value["eval_count"].as_u64().unwrap_or_default() as u16,
+            eval_duration: value["eval_duration"].as_u64().unwrap_or_default(),
+            context: value["context"]
                 .as_array()
                 .map(|arr| arr.iter().filter_map(Value::as_u64).collect())
                 .unwrap_or_default(),
-            // this is necessary because we want the string literal not in JSON format
+            // Here we attempt to parse the inner JSON string if possible.
             response: {
-                let raw = v["response"].as_str().unwrap_or_default();
+                let raw = value["response"].as_str().unwrap_or_default();
                 match serde_json::from_str::<Value>(raw) {
                     Ok(inner_val) => inner_val["response"].as_str().unwrap_or(raw).to_string(),
                     Err(_) => raw.to_string(),
@@ -123,13 +131,9 @@ impl TryFrom<String> for OllamaResponse {
 }
 
 impl Ollama {
-    pub fn new(url: impl IntoUrl, model: impl Into<String>) -> Result<Ollama, Error> {
-        let client: reqwest::Client = reqwest::Client::new();
-        let url = url.into_url();
-        let url = match url {
-            Ok(url) => url,
-            Err(error) => return Err(error),
-        };
+    pub fn new(url: impl IntoUrl, model: impl Into<String>) -> Result<Ollama, OllamaError> {
+        let client = reqwest::Client::new();
+        let url = url.into_url()?;
         Ok(Ollama {
             url,
             model: model.into(),
@@ -139,11 +143,14 @@ impl Ollama {
         })
     }
 
-    pub fn default() -> Result<Ollama, Error> {
+    pub fn default() -> Result<Ollama, OllamaError> {
         Ollama::new("http://localhost:11434", "llama3.2")
     }
 
-    pub async fn generate(&mut self, prompt: impl Into<String>) -> OllamaResponse {
+    pub async fn generate(
+        &mut self,
+        prompt: impl Into<String>,
+    ) -> Result<OllamaResponse, OllamaError> {
         let request = OllamaRequest::new(
             self.model.as_str(),
             prompt,
@@ -155,20 +162,25 @@ impl Ollama {
             self.context.clone(),
         );
 
-        let request = serde_json::to_string(&request).unwrap();
+        let request_json = serde_json::to_string(&request)?;
+
         let res = self
             .client
             .post(self.url.as_str())
-            .body(request)
+            .body(request_json)
             .send()
-            .await
-            .unwrap()
-            .text()
-            .await
-            .unwrap();
-        let response = OllamaResponse::try_from(res).unwrap();
+            .await?;
+
+        let res_text = res.text().await?;
+
+        let response = OllamaResponse::try_from(res_text)?;
+
         self.context = response.context.clone();
 
-        response
+        Ok(response)
+    }
+
+    pub fn stream() {
+        unimplemented!();
     }
 }
