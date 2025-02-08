@@ -88,7 +88,7 @@ impl Default for OllamaRequest {
             "",
             OllamaRequestOptions {
                 suffix: "".into(),
-                format: "json".into(),
+                format: "".into(),
                 system: "".into(),
                 context: vec![],
             },
@@ -200,7 +200,7 @@ impl Ollama {
             prompt,
             OllamaRequestOptions {
                 suffix: "".into(),
-                format: "json".into(),
+                format: "".into(),
                 system: self.system.clone(),
                 context: self.context.clone(),
             },
@@ -230,7 +230,7 @@ impl Ollama {
             prompt,
             OllamaRequestOptions {
                 suffix: "".into(),
-                format: "json".into(),
+                format: "".into(),
                 system: self.system.clone(),
                 context: self.context.clone(),
             },
