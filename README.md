@@ -79,7 +79,7 @@ Add to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-rusty_ollama = { git = "https://github.com/lowpolycat1/rusty_ollama" }
+rusty_ollama = { version = "0.1.0" }
 ```
 
 </p>
