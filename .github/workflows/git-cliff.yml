@@ -28,7 +28,10 @@ jobs:
               run: |
                 git config --global user.name 'github-actions[bot]'
                 git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-                git pull --rebase
                 git add CHANGELOG.md
+
+                if ! git diff --cached --quiet; then
                 git commit -m 'chore: update changelog'
                 git push
+                else
+                  echo "No changes to commit"
