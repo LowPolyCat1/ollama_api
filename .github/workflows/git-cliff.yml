@@ -34,7 +34,7 @@ jobs:
                 git add CHANGELOG.md
 
                 if ! git diff --cached --quiet; then
-                git commit -m 'chore: update changelog'
-                git push
+                  git commit -m 'chore: update changelog'
+                  git push
                 else
                   echo "No changes to commit"
