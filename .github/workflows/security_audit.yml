@@ -5,8 +5,11 @@ on:
     branches: [ master, main ]
   pull_request:
     branches: [ master, main ]
-  # schedule:
-  #   - cron: '0 0 * * 0' # Runs every Sunday at midnight
+  schedule:
+    - cron: '0 0 * * 0' # Runs every Sunday at midnight
+
+permissions:
+  contents: read
 
 jobs:
   audit:
