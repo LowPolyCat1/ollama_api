@@ -13,7 +13,7 @@ async fn main() -> Result<(), OllamaError> {
         match item {
             Ok(response) => {
                 let word = response.response;
-                print!("{}", word); // Print each word with a space
+                print!("{}", word); // Print each word
                 std::io::Write::flush(&mut std::io::stdout()).unwrap(); // Flush stdout immediately
             }
             Err(err) => {
